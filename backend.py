@@ -30,7 +30,7 @@ app = Flask(__name__)
 outputFrame = None
 lock = threading.Lock()
 
-data_all = {"time":["test", "more"], "duration":["10", "1000"], "num_today":["1", "9"]}
+data_all = {"time":[], "duration":[], "num_today":[]}
 
 host = 'http://192.168.1.74:8080/'
 url = host + 'shot.jpg'
@@ -71,81 +71,81 @@ def detect_motion(frameCount):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
-		# grab the current timestamp and draw it on the frame
+	# grab the current timestamp and draw it on the frame
         timestamp = datetime.datetime.now()
         cv2.putText(frame, timestamp.strftime("%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1)
 
-		# show is toliet is occupied
+	# show status of toliet
         cv2.putText(frame, in_toliet, (10, frame.shape[0] - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
-		#show toliet entry detection area
-        cv2.rectangle(frame, (50, 420), (520, 480), (255, 0, 255), 2)
+	# show toliet entry detection area
+        #cv2.rectangle(frame, (50, 420), (520, 480), (255, 0, 255), 2)
 
-		# if the total number of frames has reached a sufficient
-		# number to construct a reasonable background model, then
-		# continue to process the frame
+	# if the total number of frames has reached a sufficient
+	# number to construct a reasonable background model, then
+	# continue to process the frame
         if total > frameCount:
-			# detect motion in the image
+	    # detect motion in the image
             motion = md.detect(gray)
 
-			# check to see if motion was found in the frame
+	    # check to see if motion was found in the frame
             if motion is not None:
                 counter = 0
                 if len(movement) == 0: time_in_motion = time.time()
 
-				# unpack the tuple of movement frame
-				# "motion area" on the output frame
+		# unpack the tuple of movement frame
+		# "motion area" on the output frame
                 (thresh, (minX, minY, maxX, maxY)) = motion
 
-				# Only show if movement more than 500 unit^2 to prevent false detections
+		# Only show if movement more than 500 unit^2 to prevent false detections
                 if (maxX-minX)*(maxY-minY) > 500:
                     cv2.rectangle(frame, (minX, minY), (maxX, maxY), (0, 0, 255), 2)
 
-					# Save movement history
+		    # Save movement history
                     movement.append(((minX+maxX)//2, (minY+maxY)//2))
 
             else:
                 counter += 1
-				# Threshold incase of missed detection
+		# Threshold incase of missed detection
                 if counter > 5:
                     if time.time()-time_in_motion > 0.4:
                         if len(movement) != 0 and 50 < movement[-1][0] < 520 and 420 < movement[-1][1] < 480 and in_toliet != "Occupied": 
                             print("entered")
                             in_toliet = "Occupied"
                             time_in_toliet = time.time()
-                            curr_data["time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+                            curr_data["time"] = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
                         if len(movement) != 0 and 50 < movement[0][0] < 520 and 420 < movement[0][1] < 480 and in_toliet != "Unoccupied":
                             print("exited")
                             in_toliet = "Unoccupied"
                             curr_data["duration"] = int(time.time() - time_in_toliet)
                             curr_data["num_today"] = "1"
-                            
+
                             data_all["time"].append(str(curr_data["time"]))
                             data_all["duration"].append(str(curr_data["duration"]))
                             data_all["num_today"].append(str(curr_data["num_today"]))
                             print(data_all)
                     counter, movement = 0, []
 
-		# Show movement history
+	# Show movement history
         movement_points = len(movement)
         for points in range(0, movement_points, 3):
             if points > 0:
                 cv2.line(frame, movement[points-3], movement[points], (0, 255, 0), 2)
 
-		# update the background model and increment the total number
-		# of frames read thus far
+	# update the background model and increment the total number
+	# of frames read thus far
         md.update(gray)
         total += 1
 
-		# acquire the lock, set the output frame, and release the
-		# lock
+	# acquire the lock, set the output frame, and release the
+	# lock
         with lock:
             outputFrame = frame.copy()
 
 def generate():
 	# grab global references to the output frame and lock variables
 	global outputFrame, lock
- 
+
 	# loop over frames from the output stream
 	while True:
 		# wait until the lock is acquired
@@ -154,14 +154,14 @@ def generate():
 			# the iteration of the loop
 			if outputFrame is None:
 				continue
- 
+
 			# encode the frame in JPEG format
 			(flag, encodedImage) = cv2.imencode(".jpg", outputFrame)
- 
+
 			# ensure the frame was successfully encoded
 			if not flag:
 				continue
- 
+
 		# yield the output frame in the byte format
 		yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
 			bytearray(encodedImage) + b'\r\n')
@@ -189,7 +189,6 @@ def data():
 
     if request.method == 'GET':
         return data_all
-    
 
 
 #
@@ -201,7 +200,7 @@ if __name__ == '__main__':
 		32,))
 	t.daemon = True
 	t.start()
- 
+
 	# start the flask app
 	app.run(host="192.168.1.249", port=5000, debug=True, threaded=True, use_reloader=False)
 
