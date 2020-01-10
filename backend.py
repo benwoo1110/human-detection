@@ -19,7 +19,7 @@ import numpy as np
 # initialize a flask object
 #
 app = Flask(__name__)
-
+#app.config['SERVER_NAME'] = "testing:5000"
 
 #
 # Video feed
@@ -56,6 +56,7 @@ def detect_motion(frameCount):
     time_in_toliet = 0
     movement = []
     in_toliet = "Unoccupied"
+    hit_box = [20, 400, 520, 480]
     # loop over frames from the video stream
     while True:
 	# read the next frame from the video stream, resize it,
@@ -79,7 +80,7 @@ def detect_motion(frameCount):
         cv2.putText(frame, in_toliet, (10, frame.shape[0] - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
 	# show toliet entry detection area
-        #cv2.rectangle(frame, (50, 420), (520, 480), (255, 0, 255), 2)
+        cv2.rectangle(frame, tuple(hit_box[:2]), tuple(hit_box[2:]), (255, 0, 255), 2)
 
 	# if the total number of frames has reached a sufficient
 	# number to construct a reasonable background model, then
@@ -109,12 +110,12 @@ def detect_motion(frameCount):
 		# Threshold incase of missed detection
                 if counter > 5:
                     if time.time()-time_in_motion > 0.4:
-                        if len(movement) != 0 and 50 < movement[-1][0] < 520 and 420 < movement[-1][1] < 480 and in_toliet != "Occupied": 
+                        if len(movement) != 0 and hit_box[0] < movement[-1][0] < hit_box[2] and hit_box[1] < movement[-1][1] < hit_box[3] and in_toliet != "Occupied": 
                             print("entered")
                             in_toliet = "Occupied"
                             time_in_toliet = time.time()
                             curr_data["time"] = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
-                        if len(movement) != 0 and 50 < movement[0][0] < 520 and 420 < movement[0][1] < 480 and in_toliet != "Unoccupied":
+                        if len(movement) != 0 and hit_box[0] < movement[0][0] < hit_box[2] and hit_box[1] < movement[0][1] < hit_box[3] and in_toliet != "Unoccupied":
                             print("exited")
                             in_toliet = "Unoccupied"
                             curr_data["duration"] = int(time.time() - time_in_toliet)
