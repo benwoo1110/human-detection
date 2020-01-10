@@ -19,7 +19,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     public let ip_address = "192.168.1.249:5000"
     
-    public var Response: String = "LOL"
+    public var Response: String = "disconnected"
     public var Data:[String:[String]] = ["time":["lol", "test"], "duration":["10", "10000"]]
     
     // MARK: Checking connection
@@ -101,7 +101,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     // MARK: Table view for data
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 132
+        return 88
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Data["time"]!.count
@@ -110,15 +110,16 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DataTableViewCell
         
-        cell.time.text = Data["time"]![indexPath.row]
+        cell.time.text = Data["time"]!.reversed()[indexPath.row]
         
-        cell.duration.text = Data["duration"]![indexPath.row] + " sec"
+        cell.duration.text = "Duration: " + Data["duration"]!.reversed()[indexPath.row] + " sec"
         
-        cell.num_today.text = String(indexPath.row + 1)
+        cell.num_today.text = "counter: " + String(Data["time"]!.count - indexPath.row)
         
         return cell
     }
     
+    // MARK: Startup
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -135,6 +136,19 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         video_feed.load(URLRequest(url: url))
         
         test_post()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Response = "disconnected"
+        get_data()
+        
+        video_feed.reload()
+        
+        test_post()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        video_feed.reload()
     }
 }
 
