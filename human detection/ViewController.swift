@@ -20,7 +20,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     public let ip_address = "192.168.1.249:5000"
     
     public var Response: String = "disconnected"
-    public var Data:[String:[String]] = ["time":["lol", "test"], "duration":["10", "10000"]]
+    public var Data:[String:[String]] = ["time":["test"], "duration":["10"], "num_today":[]]
     
     // MARK: Checking connection
     func doLabelChange() {
@@ -39,8 +39,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")        // the expected response is also JSON
         request.httpMethod = "POST"
 
-        let dictionary = ["email": "username", "userPwd": "password"]
-        request.httpBody = try! JSONEncoder().encode(dictionary)
+        let connect = "Connection from iPhone"
+        request.httpBody = try! JSONEncoder().encode(connect)
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
@@ -133,7 +133,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                                  repeats: true)
         
         let url = URL(string: "http://\(ip_address)/video_feed")!
-        video_feed.load(URLRequest(url: url))
+        // video_feed.load(URLRequest(url: url))
         
         test_post()
     }
