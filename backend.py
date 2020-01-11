@@ -48,6 +48,7 @@ def detect_motion(frameCount):
 	# read thus far
     md = SingleMotionDetector(accumWeight=0.25)
 
+    enter_image = ""
     curr_data = {"time":"", "duration":"", "num_today":""}
     total = 0
     counter = 0
@@ -104,6 +105,9 @@ def detect_motion(frameCount):
 		    # Save movement history
                     movement.append(((minX+maxX)//2, (minY+maxY)//2))
 
+                    if hit_box[0] < movement[-1][0] < hit_box[2] and hit_box[1]-100 < movement[-1][1] < hit_box[3]-100:
+                        enter_image = frame
+
             else:
                 counter += 1
 		# Threshold incase of missed detection
@@ -116,11 +120,15 @@ def detect_motion(frameCount):
                             time_in_toliet = time.time()
                             curr_data["time"] = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
 
+                            cv2.imwrite("images/"+str(curr_data["time"])+"_entered.png", enter_image)
+
                         if len(movement) != 0 and hit_box[0] < movement[0][0] < hit_box[2] and hit_box[1] < movement[0][1] < hit_box[3] and in_toliet != "Unoccupied":
                             print("exited")
                             in_toliet = "Unoccupied"
                             curr_data["duration"] = int(time.time() - time_in_toliet)
                             curr_data["num_today"] = "1"
+
+                            cv2.imwrite("images/"+str(curr_data["time"])+"_exited.png", enter_image)
 
                             Database.add_data(str(curr_data["time"]), str(curr_data["duration"]), str(curr_data["num_today"]))
                             Database.read_data()
