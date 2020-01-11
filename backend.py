@@ -12,8 +12,7 @@ import json
 import jsonify
 
 import numpy as np
-#from urllib.request import urlopen
-
+from database import Database
 
 #
 # initialize a flask object
@@ -110,21 +109,22 @@ def detect_motion(frameCount):
 		# Threshold incase of missed detection
                 if counter > 5:
                     if time.time()-time_in_motion > 0.4:
+
                         if len(movement) != 0 and hit_box[0] < movement[-1][0] < hit_box[2] and hit_box[1] < movement[-1][1] < hit_box[3] and in_toliet != "Occupied": 
                             print("entered")
                             in_toliet = "Occupied"
                             time_in_toliet = time.time()
                             curr_data["time"] = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
+
                         if len(movement) != 0 and hit_box[0] < movement[0][0] < hit_box[2] and hit_box[1] < movement[0][1] < hit_box[3] and in_toliet != "Unoccupied":
                             print("exited")
                             in_toliet = "Unoccupied"
                             curr_data["duration"] = int(time.time() - time_in_toliet)
                             curr_data["num_today"] = "1"
 
-                            data_all["time"].append(str(curr_data["time"]))
-                            data_all["duration"].append(str(curr_data["duration"]))
-                            data_all["num_today"].append(str(curr_data["num_today"]))
-                            print(data_all)
+                            Database.add_data(str(curr_data["time"]), str(curr_data["duration"]), str(curr_data["num_today"]))
+                            Database.read_data()
+
                     counter, movement = 0, []
 
 	# Show movement history
@@ -189,7 +189,7 @@ def data():
         return "connected"
 
     if request.method == 'GET':
-        return data_all
+        return Database.send_data()
 
 
 #
