@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		204E1A91DA8B9C98CA6A3102 /* Pods_human_detection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD02F2AD5E6DC96777E2D0D9 /* Pods_human_detection.framework */; };
 		4265EFC623C803D200D098CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265EFC523C803D200D098CF /* AppDelegate.swift */; };
 		4265EFC823C803D200D098CF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265EFC723C803D200D098CF /* SceneDelegate.swift */; };
 		4265EFCA23C803D200D098CF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265EFC923C803D200D098CF /* ViewController.swift */; };
@@ -16,6 +17,8 @@
 		4265EFDD23C803D400D098CF /* human_detectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265EFDC23C803D400D098CF /* human_detectionTests.swift */; };
 		4265EFE823C803D400D098CF /* human_detectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265EFE723C803D400D098CF /* human_detectionUITests.swift */; };
 		4265EFF823C8462700D098CF /* DataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265EFF723C8462700D098CF /* DataTableViewCell.swift */; };
+		9ACA0EB85271D6132C82874C /* Pods_human_detection_human_detectionUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0650594C752B23BBE55F8BE9 /* Pods_human_detection_human_detectionUITests.framework */; };
+		F2D6F955BEF7B3DE460E4980 /* Pods_human_detectionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CB7782AF60CB6798070321D /* Pods_human_detectionTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0650594C752B23BBE55F8BE9 /* Pods_human_detection_human_detectionUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_human_detection_human_detectionUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B9DAFF02571B6D2941C2779 /* Pods-human detection.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-human detection.debug.xcconfig"; path = "Target Support Files/Pods-human detection/Pods-human detection.debug.xcconfig"; sourceTree = "<group>"; };
+		0CB7782AF60CB6798070321D /* Pods_human_detectionTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_human_detectionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DB9A9707794BCD54AACAF9C /* Pods-human detectionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-human detectionTests.debug.xcconfig"; path = "Target Support Files/Pods-human detectionTests/Pods-human detectionTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2F0777636B89FE48536C0450 /* Pods-human detection-human detectionUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-human detection-human detectionUITests.release.xcconfig"; path = "Target Support Files/Pods-human detection-human detectionUITests/Pods-human detection-human detectionUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4265EFC223C803D200D098CF /* human detection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "human detection.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4265EFC523C803D200D098CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4265EFC723C803D200D098CF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +59,10 @@
 		4265EFE723C803D400D098CF /* human_detectionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = human_detectionUITests.swift; sourceTree = "<group>"; };
 		4265EFE923C803D400D098CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4265EFF723C8462700D098CF /* DataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTableViewCell.swift; sourceTree = "<group>"; };
+		8E59B5B984BC3005560DEF88 /* Pods-human detection.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-human detection.release.xcconfig"; path = "Target Support Files/Pods-human detection/Pods-human detection.release.xcconfig"; sourceTree = "<group>"; };
+		9718D7EFC34FF0A9883B7A31 /* Pods-human detectionTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-human detectionTests.release.xcconfig"; path = "Target Support Files/Pods-human detectionTests/Pods-human detectionTests.release.xcconfig"; sourceTree = "<group>"; };
+		B1BA86C2EE5CE8476B3D56BA /* Pods-human detection-human detectionUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-human detection-human detectionUITests.debug.xcconfig"; path = "Target Support Files/Pods-human detection-human detectionUITests/Pods-human detection-human detectionUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		DD02F2AD5E6DC96777E2D0D9 /* Pods_human_detection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_human_detection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				204E1A91DA8B9C98CA6A3102 /* Pods_human_detection.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2D6F955BEF7B3DE460E4980 /* Pods_human_detectionTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +86,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9ACA0EB85271D6132C82874C /* Pods_human_detection_human_detectionUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		046F60327E4B50AF59B43DB9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0B9DAFF02571B6D2941C2779 /* Pods-human detection.debug.xcconfig */,
+				8E59B5B984BC3005560DEF88 /* Pods-human detection.release.xcconfig */,
+				B1BA86C2EE5CE8476B3D56BA /* Pods-human detection-human detectionUITests.debug.xcconfig */,
+				2F0777636B89FE48536C0450 /* Pods-human detection-human detectionUITests.release.xcconfig */,
+				0DB9A9707794BCD54AACAF9C /* Pods-human detectionTests.debug.xcconfig */,
+				9718D7EFC34FF0A9883B7A31 /* Pods-human detectionTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		4265EFB923C803D200D098CF = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +114,8 @@
 				4265EFDB23C803D400D098CF /* human detectionTests */,
 				4265EFE623C803D400D098CF /* human detectionUITests */,
 				4265EFC323C803D200D098CF /* Products */,
+				046F60327E4B50AF59B43DB9 /* Pods */,
+				E23240CFED2277576D0EF6C2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -131,6 +162,16 @@
 			path = "human detectionUITests";
 			sourceTree = "<group>";
 		};
+		E23240CFED2277576D0EF6C2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DD02F2AD5E6DC96777E2D0D9 /* Pods_human_detection.framework */,
+				0650594C752B23BBE55F8BE9 /* Pods_human_detection_human_detectionUITests.framework */,
+				0CB7782AF60CB6798070321D /* Pods_human_detectionTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -138,9 +179,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4265EFEC23C803D400D098CF /* Build configuration list for PBXNativeTarget "human detection" */;
 			buildPhases = (
+				08F0F7B99C42888FBD91BCD0 /* [CP] Check Pods Manifest.lock */,
 				4265EFBE23C803D200D098CF /* Sources */,
 				4265EFBF23C803D200D098CF /* Frameworks */,
 				4265EFC023C803D200D098CF /* Resources */,
+				8A1F3697B4C75898286B498E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -155,6 +198,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4265EFEF23C803D400D098CF /* Build configuration list for PBXNativeTarget "human detectionTests" */;
 			buildPhases = (
+				D3B35B23B4F8A9D2B5568FD0 /* [CP] Check Pods Manifest.lock */,
 				4265EFD423C803D400D098CF /* Sources */,
 				4265EFD523C803D400D098CF /* Frameworks */,
 				4265EFD623C803D400D098CF /* Resources */,
@@ -173,9 +217,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4265EFF223C803D400D098CF /* Build configuration list for PBXNativeTarget "human detectionUITests" */;
 			buildPhases = (
+				8CE5D432817E5E52F8183D95 /* [CP] Check Pods Manifest.lock */,
 				4265EFDF23C803D400D098CF /* Sources */,
 				4265EFE023C803D400D098CF /* Frameworks */,
 				4265EFE123C803D400D098CF /* Resources */,
+				AE42B61D90FE3DD0958CEA08 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -256,6 +302,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		08F0F7B99C42888FBD91BCD0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-human detection-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8A1F3697B4C75898286B498E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-human detection/Pods-human detection-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-human detection/Pods-human detection-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-human detection/Pods-human detection-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8CE5D432817E5E52F8183D95 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-human detection-human detectionUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AE42B61D90FE3DD0958CEA08 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-human detection-human detectionUITests/Pods-human detection-human detectionUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-human detection-human detectionUITests/Pods-human detection-human detectionUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-human detection-human detectionUITests/Pods-human detection-human detectionUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D3B35B23B4F8A9D2B5568FD0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-human detectionTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4265EFBE23C803D200D098CF /* Sources */ = {
@@ -436,6 +585,7 @@
 		};
 		4265EFED23C803D400D098CF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0B9DAFF02571B6D2941C2779 /* Pods-human detection.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -454,6 +604,7 @@
 		};
 		4265EFEE23C803D400D098CF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E59B5B984BC3005560DEF88 /* Pods-human detection.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -472,6 +623,7 @@
 		};
 		4265EFF023C803D400D098CF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0DB9A9707794BCD54AACAF9C /* Pods-human detectionTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -494,6 +646,7 @@
 		};
 		4265EFF123C803D400D098CF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9718D7EFC34FF0A9883B7A31 /* Pods-human detectionTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -516,6 +669,7 @@
 		};
 		4265EFF323C803D400D098CF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B1BA86C2EE5CE8476B3D56BA /* Pods-human detection-human detectionUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -536,6 +690,7 @@
 		};
 		4265EFF423C803D400D098CF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2F0777636B89FE48536C0450 /* Pods-human detection-human detectionUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

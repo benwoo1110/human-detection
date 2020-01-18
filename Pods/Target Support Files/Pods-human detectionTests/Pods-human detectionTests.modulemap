@@ -1,0 +1,6 @@
+framework module Pods_human_detectionTests {
+  umbrella header "Pods-human detectionTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -17,21 +17,34 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     @IBOutlet weak var test: UILabel!
     @IBOutlet weak var data_view: UITableView!
     
-    public let ip_address = "192.168.1.249:5000"
+    public let ip_address = "192.168.1.181:5000"
     
-    public var Response: String = "disconnected"
-    public var Data:[String:[String]] = ["time":["test"], "duration":["10"], "num_today":[]]
+    public var Data:[String:[String]] = ["time":[], "duration":[], "num_today":[]]
     
     // MARK: Checking connection
-    func doLabelChange() {
+    func doLabelChange(Response: String = "Disconnected") {
         DispatchQueue.main.async {
-               self.test.text = self.Response
+            if (Response == "connected") {
+                self.test.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
+                self.test.text = "Connected"
+                
+                self.video_feed.alpha = 1
             }
+            else {
+                self.test.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
+                self.test.text = "Disconnected"
+                
+                self.video_feed.alpha = 0.2
+            }
+        }
     }
     
-    func test_post() {
+    func check_connection() {
         // Prepare URL
         guard let url = URL(string: "http://\(ip_address)/data") else { return }
+        
+        // Set as disconnected first
+        self.doLabelChange()
         
         var request = URLRequest(url: url)
         
@@ -51,9 +64,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                     print("statusCode: \(response.statusCode)")
                 }
                 if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                    self.Response = dataString
-                    print("data: \(self.Response)")
-                    self.doLabelChange()
+                    self.doLabelChange(Response: dataString)
                 }
             }
             
@@ -120,35 +131,52 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     }
     
     // MARK: Startup
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        get_data()
+        // Run when app opens appears
+        NotificationCenter.default.addObserver(self,
+        selector: #selector(appWillEnterForeground),
+        name: UIApplication.willEnterForegroundNotification,
+        object: nil)
         
+        // Check connection
+        test.textAlignment = .center
+        test.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
+        test.layer.cornerRadius = 15
+        test.layer.masksToBounds = true
+        
+        check_connection()
+        
+        // Grab data from SQL
+        get_data()
         _ = Timer.scheduledTimer(timeInterval: 5.0,
                                  target: self,
                                  selector: #selector(get_data),
                                  userInfo: nil,
                                  repeats: true)
         
-        let url = URL(string: "http://\(ip_address)/video_feed")!
-        // video_feed.load(URLRequest(url: url))
+        // Load live video feed
+        video_feed.layer.cornerRadius = 30
+        video_feed.layer.masksToBounds = true
+        video_feed.scrollView.isScrollEnabled = false
+        video_feed.scrollView.bounces = false
+        video_feed.backgroundColor = .black
         
-        test_post()
+        let url = URL(string: "http://\(ip_address)/video_feed")!
+        video_feed.load(URLRequest(url: url))
+        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        Response = "disconnected"
+    @objc func appWillEnterForeground() {
+        check_connection()
         get_data()
         
-        video_feed.reload()
-        
-        test_post()
+        let url = URL(string: "http://\(ip_address)/video_feed")!
+        video_feed.load(URLRequest(url: url))
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        video_feed.reload()
-    }
+
 }
 
