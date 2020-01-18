@@ -11,14 +11,18 @@ class Data(Base):
 
 	id = Column(Integer, primary_key=True)
 
+	year = Column(String)
+	month = Column(String)
+	day = Column(String)
 	time = Column(String)
 	duration = Column(String)
-	num_today = Column(String)
 
-	def __init__(self, time, duration, num_today):
+	def __init__(self, year, month, day, time, duration):
+		self.year = year
+		self.month = month
+		self.day = day
 		self.time = time
 		self.duration = duration
-		self.num_today = num_today
 
 # create tables
 Base.metadata.create_all(engine)

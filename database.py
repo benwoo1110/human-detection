@@ -3,18 +3,14 @@ from sqlalchemy.orm import sessionmaker
 from database_create import Data
 
 class Database:
-	def start_session():
-		engine = create_engine('sqlite:///database.db', echo=True)
-		session = sessionmaker(bind=engine)
-		return session()
-
-	def add_data(time, duration, num_today):
+	def add_data(year, month, day, time, duration):
 		engine = create_engine('sqlite:///database.db', echo=True)
 		Session = sessionmaker(bind=engine)
 		session = Session()
 
-		session.add(Data(time, duration, num_today))
+		session.add(Data(year, month, day, time, duration))
 		session.commit()
+#		session.close()
 
 	def read_data():
 		engine = create_engine('sqlite:///database.db', echo=True)
@@ -24,7 +20,9 @@ class Database:
 		all_data = session.query(Data).all()
 
 		for data in all_data:
-			print (data.time, data.duration, data.num_today)
+			print (data.year, data.month, data.day, data.time, data.duration)
+
+#		session.close()
 
 	def clear_data():
 		engine = create_engine('sqlite:///database.db', echo=True)
@@ -35,6 +33,7 @@ class Database:
 
 		session.delete(all_data)
 		session.commit()
+#		session.close()
 
 	def delete_data(time):
 		engine = create_engine('sqlite:///database.db', echo=True)
@@ -45,18 +44,23 @@ class Database:
 
 		session.delete(rm_data)
 		session.commit()
+#		session.close()
 
 	def send_data():
 		engine = create_engine('sqlite:///database.db', echo=True)
 		Session = sessionmaker(bind=engine)
 		session = Session()
 
-		send_data = {"time":[], "duration":[], "num_today":[]}
+		send_data = {"year":[], "month":[], "day":[], "time":[], "duration":[]}
 		all_data = session.query(Data).all()
 
 		for data in all_data:
+			send_data["year"].append(str(data.year))
+			send_data["month"].append(str(data.month))
+			send_data["day"].append(str(data.day))
 			send_data["time"].append(str(data.time))
 			send_data["duration"].append(str(data.duration))
-			send_data["num_today"].append(str(data.num_today))
-		#print (send_data)
+
+#		session.close()
+
 		return send_data

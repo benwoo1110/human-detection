@@ -10,7 +10,6 @@ import time
 import cv2
 import json
 import jsonify
-
 import numpy as np
 from database import Database
 
@@ -19,6 +18,7 @@ from database import Database
 #
 app = Flask(__name__)
 #app.config['SERVER_NAME'] = "testing:5000"
+
 
 #
 # Video feed
@@ -31,12 +31,11 @@ lock = threading.Lock()
 
 data_all = {"time":[], "duration":[], "num_today":[]}
 
-host = 'http://192.168.1.74:8080/'
-url = host + 'shot.jpg'
-
 # initialize the video stream and allow the camera sensor to warmup
 vs = cv2.VideoCapture(0)
-#vs = VideoStream(usePiCamera=1).start()
+vs.set(3,800)
+vs.set(4,600)
+
 time.sleep(2.0)
 
 def detect_motion(frameCount):
@@ -49,35 +48,30 @@ def detect_motion(frameCount):
     md = SingleMotionDetector(accumWeight=0.25)
 
     enter_image = ""
-    curr_data = {"time":"", "duration":"", "num_today":""}
+    curr_data = {"year":" ", "month":" ", "day":" ", "time":" ", "duration":" "}
     total = 0
     counter = 0
     time_in_motion = 0
     time_in_toliet = 0
     movement = []
     in_toliet = "Unoccupied"
-    hit_box = [20, 400, 520, 480]
+    hit_box = [50, 350, 500, 800]
     # loop over frames from the video stream
     while True:
 	# read the next frame from the video stream, resize it,
 	# convert the frame to grayscale, and blur it
         ret, frame = vs.read()
 
-        #imgResp=urlopen(url)
-        #imgNp=np.array(bytearray(imgResp.read()),dtype=np.uint8)
-        #frame=cv2.imdecode(imgNp,-1)
-
-        # frame = imutils.resize(frame, width=600)
-        frame = imutils.rotate(frame, 180)
+        # frame = imutils.rotate(frame, 180)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
 	# grab the current timestamp and draw it on the frame
         timestamp = datetime.datetime.now()
-        cv2.putText(frame, timestamp.strftime("%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1)
+        cv2.putText(frame, timestamp.strftime("%A %d %B %Y %I:%M:%S%p"), (20, frame.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 1)
 
 	# show status of toliet
-        cv2.putText(frame, in_toliet, (10, frame.shape[0] - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(frame, in_toliet, (20, frame.shape[0] - 45), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
 	# show toliet entry detection area
         cv2.rectangle(frame, tuple(hit_box[:2]), tuple(hit_box[2:]), (255, 0, 255), 2)
@@ -114,24 +108,31 @@ def detect_motion(frameCount):
                 if counter > 5:
                     if time.time()-time_in_motion > 0.4:
 
+			# Entered room
                         if len(movement) != 0 and hit_box[0] < movement[-1][0] < hit_box[2] and hit_box[1] < movement[-1][1] < hit_box[3] and in_toliet != "Occupied": 
                             print("entered")
                             in_toliet = "Occupied"
                             time_in_toliet = time.time()
-                            curr_data["time"] = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
+
+                            curr_data["year"] = time.strftime("%Y")
+                            curr_data["month"] = timestamp.strftime("%m")
+                            curr_data["day"] = timestamp.strftime("%e")
+                            curr_data["time"] = timestamp.strftime("%R")
 
                             cv2.imwrite("images/"+str(curr_data["time"])+"_entered.png", enter_image)
 
+			# Exited room
                         if len(movement) != 0 and hit_box[0] < movement[0][0] < hit_box[2] and hit_box[1] < movement[0][1] < hit_box[3] and in_toliet != "Unoccupied":
                             print("exited")
                             in_toliet = "Unoccupied"
                             curr_data["duration"] = int(time.time() - time_in_toliet)
-                            curr_data["num_today"] = "1"
 
-                            cv2.imwrite("images/"+str(curr_data["time"])+"_exited.png", enter_image)
+                           # Only save if duration is more that 1 second
+                            if curr_data["duration"] > 1:
+	                            cv2.imwrite("images/"+str(curr_data["time"])+"_exited.png", enter_image)
 
-                            Database.add_data(str(curr_data["time"]), str(curr_data["duration"]), str(curr_data["num_today"]))
-                            Database.read_data()
+        	                    Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str(curr_data["duration"]))
+                	            Database.read_data()
 
                     counter, movement = 0, []
 
@@ -211,7 +212,7 @@ if __name__ == '__main__':
 	t.start()
 
 	# start the flask app
-	app.run(host="192.168.1.249", port=5000, debug=True, threaded=True, use_reloader=False)
+	app.run(host="192.168.1.181", port=5000, debug=True, threaded=True, use_reloader=False)
 
 
 #
