@@ -13,73 +13,13 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     
     // MARK: Variables
-    @IBOutlet weak var video_feed: WKWebView!
-    @IBOutlet weak var test: UILabel!
     @IBOutlet weak var data_view: UITableView!
     
     public let ip_address = "192.168.1.181:5000"
-    
-    public var Data:[String:[String]] = ["time":[], "duration":[], "num_today":[]]
-    
-    // MARK: Checking connection
-    func doLabelChange(Response: String = "Disconnected") {
-        DispatchQueue.main.async {
-            if (Response == "connected") {
-                self.test.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
-                self.test.text = "Connected"
-                
-                self.video_feed.alpha = 1
-            }
-            else {
-                self.test.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
-                self.test.text = "Disconnected"
-                
-                self.video_feed.alpha = 0.2
-            }
-        }
-    }
-    
-    func check_connection() {
-        // Prepare URL
-        guard let url = URL(string: "http://\(ip_address)/data") else { return }
-        
-        // Set as disconnected first
-        self.doLabelChange()
-        
-        var request = URLRequest(url: url)
-        
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")  // the request is JSON
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept")        // the expected response is also JSON
-        request.httpMethod = "POST"
-
-        let connect = "Connection from iPhone"
-        request.httpBody = try! JSONEncoder().encode(connect)
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            if let error = error {
-                print("error: \(error)")
-            } else {
-                if let response = response as? HTTPURLResponse {
-                    print("statusCode: \(response.statusCode)")
-                }
-                if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                    self.doLabelChange(Response: dataString)
-                }
-            }
-            
-        }
-        task.resume()
-    }
+    public var Data:[String:[String]] = ["year":[], "month":[], "day":[], "time":[], "duration":[]]
     
     
     // MARK: Recieving data
-    func save_data(dictionary: [String:[String]]) {
-        DispatchQueue.main.async {
-            self.Data = dictionary
-            }
-    }
-    
     @objc func get_data() {
         // Prepare URL
         let url = URL(string: "http://\(ip_address)/data")!
@@ -109,16 +49,76 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         task.resume()
     }
     
+    func save_data(dictionary: [String:[String]]) {
+        DispatchQueue.main.async {
+            self.Data = dictionary
+            }
+    }
     
     // MARK: Table view for data
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 88
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var title = "error"
+        switch section {
+        case 0: title = "Video Feed"
+        case 1: title = "Data"
+        default: break
+        }
+        
+        return title
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        var height = 0
+        switch indexPath.section {
+        case 0: height = 316
+        case 1: height = 88
+        default: break
+        }
+        
+        return CGFloat(height)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Data["time"]!.count
+        var row = 0
+        switch section {
+        case 0: row = 1
+        case 1: row = 10
+        default: break
+        }
+        
+        return row
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        // Video feed
+        if (indexPath.section == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "video_cell", for: indexPath) as! VideoTableViewCell
+            cell.check_connection(ip_address: ip_address)
+            
+            return cell
+        }
+        
+        // Data
+        if (indexPath.section == 1) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "data_cell", for: indexPath) as! DataTableViewCell
+            
+            cell.time.text = "blahh"
+            cell.duration.text = "10000000 sec"
+            cell.num_today.text = "1"
+            
+            return cell
+        }
+        else {
+            let table = UITableViewCell()
+            return table
+        }
+        
+        /*
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DataTableViewCell
         
         cell.time.text = Data["time"]!.reversed()[indexPath.row]
@@ -126,15 +126,17 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         cell.duration.text = "Duration: " + Data["duration"]!.reversed()[indexPath.row] + " sec"
         
         cell.num_today.text = "counter: " + String(Data["time"]!.count - indexPath.row)
+    */
         
-        return cell
     }
     
     // MARK: Startup
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        // Set large title
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         // Run when app opens appears
         NotificationCenter.default.addObserver(self,
@@ -142,41 +144,16 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         name: UIApplication.willEnterForegroundNotification,
         object: nil)
         
-        // Check connection
-        test.textAlignment = .center
-        test.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
-        test.layer.cornerRadius = 15
-        test.layer.masksToBounds = true
-        
-        check_connection()
-        
-        // Grab data from SQL
+        // Grab data every 5 seconds from SQL
         get_data()
-        _ = Timer.scheduledTimer(timeInterval: 5.0,
-                                 target: self,
-                                 selector: #selector(get_data),
-                                 userInfo: nil,
-                                 repeats: true)
-        
-        // Load live video feed
-        video_feed.layer.cornerRadius = 30
-        video_feed.layer.masksToBounds = true
-        video_feed.scrollView.isScrollEnabled = false
-        video_feed.scrollView.bounces = false
-        video_feed.backgroundColor = .black
-        
-        let url = URL(string: "http://\(ip_address)/video_feed")!
-        video_feed.load(URLRequest(url: url))
-        
+        _ = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(get_data), userInfo: nil, repeats: true)
     }
     
     @objc func appWillEnterForeground() {
-        check_connection()
         get_data()
-        
-        let url = URL(string: "http://\(ip_address)/video_feed")!
-        video_feed.load(URLRequest(url: url))
+        data_view.reloadData()
     }
+    
 
 }
 
