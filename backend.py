@@ -99,9 +99,6 @@ def detect_motion(frameCount):
 		    # Save movement history
                     movement.append(((minX+maxX)//2, (minY+maxY)//2))
 
-                    if hit_box[0] < movement[-1][0] < hit_box[2] and hit_box[1]-100 < movement[-1][1] < hit_box[3]-100:
-                        enter_image = frame
-
             else:
                 counter += 1
 		# Threshold incase of missed detection
@@ -119,8 +116,6 @@ def detect_motion(frameCount):
                             curr_data["day"] = timestamp.strftime("%e")
                             curr_data["time"] = timestamp.strftime("%R")
 
-                            cv2.imwrite("images/"+str(curr_data["time"])+"_entered.png", enter_image)
-
 			# Exited room
                         if len(movement) != 0 and hit_box[0] < movement[0][0] < hit_box[2] and hit_box[1] < movement[0][1] < hit_box[3] and in_toliet != "Unoccupied":
                             print("exited")
@@ -129,9 +124,7 @@ def detect_motion(frameCount):
 
                            # Only save if duration is more that 1 second
                             if curr_data["duration"] > 1:
-	                            cv2.imwrite("images/"+str(curr_data["time"])+"_exited.png", enter_image)
-
-        	                    Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str(curr_data["duration"]))
+	                            Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str(curr_data["duration"]))
                 	            Database.read_data()
 
                     counter, movement = 0, []
@@ -212,7 +205,7 @@ if __name__ == '__main__':
 	t.start()
 
 	# start the flask app
-	app.run(host="192.168.1.181", port=5000, debug=True, threaded=True, use_reloader=False)
+	app.run(host="192.168.1.237", port=5000, debug=True, threaded=True, use_reloader=False)
 
 
 #
