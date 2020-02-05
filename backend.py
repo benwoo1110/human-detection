@@ -1,23 +1,35 @@
 # import the necessary packages
-from singlemotiondetector import SingleMotionDetector
+
+# Video capture
 from imutils.video import VideoStream
-from flask import Response, Flask, render_template, request
+import imutils
 import threading
 import argparse
-import datetime
-import imutils
-import time
+import numpy as np
 import cv2
+
+# Time
+import datetime
+import time
+
+# Web
+from flask import Response, Flask, render_template, request
 import json
 import jsonify
-import numpy as np
+import socket
+
+# Python files
+from singlemotiondetector import SingleMotionDetector
 from database import Database
+
 
 #
 # initialize a flask object
 #
 app = Flask(__name__)
-#app.config['SERVER_NAME'] = "testing:5000"
+
+# Grep device ip
+ip_address = socket.gethostbyname(socket.gethostname())
 
 
 #
@@ -39,12 +51,12 @@ vs.set(4,600)
 time.sleep(2.0)
 
 def detect_motion(frameCount):
-	# grab global references to the video stream, output frame, and
-	# lock variables
+    # grab global references to the video stream, output frame, and
+    # lock variables
     global  vs, outputFrame, lock, data_all
 
-	# initialize the motion detector and the total number of frames
-	# read thus far
+    # initialize the motion detector and the total number of frames
+    # read thus far
     md = SingleMotionDetector(accumWeight=0.25)
 
     enter_image = ""
@@ -106,8 +118,13 @@ def detect_motion(frameCount):
                     if time.time()-time_in_motion > 0.4:
 
 			# Entered room
-                        if len(movement) != 0 and hit_box[0] < movement[-1][0] < hit_box[2] and hit_box[1] < movement[-1][1] < hit_box[3] and in_toliet != "Occupied": 
-                            print("entered")
+                        if len(movement) != 0 and hit_box[0] < movement[-1][0] < hit_box[2] and hit_box[1] < movement[-1][1] < hit_box[3]:
+                            # If exited detection is missed:
+                            if in_toliet == "Occupied":
+                                Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str('-1'))
+                	        Database.read_data()
+
+                	    print("entered")
                             in_toliet = "Occupied"
                             time_in_toliet = time.time()
 
@@ -115,15 +132,20 @@ def detect_motion(frameCount):
                             curr_data["month"] = timestamp.strftime("%m")
                             curr_data["day"] = timestamp.strftime("%e")
                             curr_data["time"] = timestamp.strftime("%R")
+                                
 
 			# Exited room
-                        if len(movement) != 0 and hit_box[0] < movement[0][0] < hit_box[2] and hit_box[1] < movement[0][1] < hit_box[3] and in_toliet != "Unoccupied":
+                        if len(movement) != 0 and hit_box[0] < movement[0][0] < hit_box[2] and hit_box[1] < movement[0][1] < hit_box[3]:
+                            if in_toliet == "Unoccupied":
+                                Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str('-1'))
+                	        Database.read_data()
+                	            
                             print("exited")
                             in_toliet = "Unoccupied"
                             curr_data["duration"] = int(time.time() - time_in_toliet)
 
-                           # Only save if duration is more that 1 second
-                            if curr_data["duration"] > 1:
+                           # Only save if duration is more that 5 second
+                            if curr_data["duration"] > 5:
 	                            Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str(curr_data["duration"]))
                 	            Database.read_data()
 
@@ -205,7 +227,7 @@ if __name__ == '__main__':
 	t.start()
 
 	# start the flask app
-	app.run(host="192.168.1.237", port=5000, debug=True, threaded=True, use_reloader=False)
+	app.run(host=ip_address, port=5000, debug=True, threaded=True, use_reloader=False)
 
 
 #
