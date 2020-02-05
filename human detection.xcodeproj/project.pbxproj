@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,6 +17,7 @@
 		4265EFDD23C803D400D098CF /* human_detectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265EFDC23C803D400D098CF /* human_detectionTests.swift */; };
 		4265EFE823C803D400D098CF /* human_detectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265EFE723C803D400D098CF /* human_detectionUITests.swift */; };
 		4265EFF823C8462700D098CF /* OverviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265EFF723C8462700D098CF /* OverviewTableViewCell.swift */; };
+		42A8EDDD23D3555F00711052 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 42A8EDDC23D3555F00711052 /* SwiftUICharts */; };
 		9ACA0EB85271D6132C82874C /* Pods_human_detection_human_detectionUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0650594C752B23BBE55F8BE9 /* Pods_human_detection_human_detectionUITests.framework */; };
 		F2D6F955BEF7B3DE460E4980 /* Pods_human_detectionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CB7782AF60CB6798070321D /* Pods_human_detectionTests.framework */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				204E1A91DA8B9C98CA6A3102 /* Pods_human_detection.framework in Frameworks */,
+				42A8EDDD23D3555F00711052 /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +191,9 @@
 			dependencies = (
 			);
 			name = "human detection";
+			packageProductDependencies = (
+				42A8EDDC23D3555F00711052 /* SwiftUICharts */,
+			);
 			productName = "human detection";
 			productReference = 4265EFC223C803D200D098CF /* human detection.app */;
 			productType = "com.apple.product-type.application";
@@ -264,6 +269,9 @@
 				Base,
 			);
 			mainGroup = 4265EFB923C803D200D098CF;
+			packageReferences = (
+				42A8EDDB23D3555F00711052 /* XCRemoteSwiftPackageReference "ChartView" */,
+			);
 			productRefGroup = 4265EFC323C803D200D098CF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -748,6 +756,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		42A8EDDB23D3555F00711052 /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		42A8EDDC23D3555F00711052 /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42A8EDDB23D3555F00711052 /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4265EFBA23C803D200D098CF /* Project object */;
 }

@@ -31,43 +31,84 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lG1-Ir-khL">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lG1-Ir-khL">
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="video_cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="video_cell" rowHeight="316" id="wqW-vT-S3t" customClass="VideoTableViewCell" customModule="human_detection" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="316"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="video_cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="video_cell" rowHeight="310" id="wqW-vT-S3t" customClass="VideoTableViewCell" customModule="human_detection" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="310"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wqW-vT-S3t" id="ayP-nV-ucq">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="316"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="310"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AzN-pJ-H5a">
-                                                    <rect key="frame" x="26" y="23" width="150" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <wkWebView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6B0-Pm-bbQ">
-                                                    <rect key="frame" x="14" y="14" width="386" height="289.5"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6B0-Pm-bbQ">
+                                                    <rect key="frame" x="20" y="11" width="373" height="280"/>
                                                     <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <wkWebViewConfiguration key="configuration">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="6B0-Pm-bbQ" secondAttribute="height" multiplier="373:280" id="IdL-e0-KCF"/>
+                                                    </constraints>
+                                                    <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" allowsPictureInPictureMediaPlayback="NO">
+                                                        <dataDetectorTypes key="dataDetectorTypes" none="YES"/>
                                                         <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                                         <wkPreferences key="preferences"/>
                                                     </wkWebViewConfiguration>
                                                 </wkWebView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AzN-pJ-H5a">
+                                                    <rect key="frame" x="31" y="20" width="138" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="6B0-Pm-bbQ" firstAttribute="top" secondItem="ayP-nV-ucq" secondAttribute="topMargin" id="EtU-x6-Y3B"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="6B0-Pm-bbQ" secondAttribute="trailing" constant="1" id="FLY-4O-hBw"/>
+                                                <constraint firstItem="6B0-Pm-bbQ" firstAttribute="leading" secondItem="ayP-nV-ucq" secondAttribute="leadingMargin" id="O2V-Gh-e7q"/>
+                                                <constraint firstItem="AzN-pJ-H5a" firstAttribute="top" secondItem="ayP-nV-ucq" secondAttribute="topMargin" constant="9" id="VOz-EV-ol0"/>
+                                                <constraint firstItem="AzN-pJ-H5a" firstAttribute="leading" secondItem="ayP-nV-ucq" secondAttribute="leadingMargin" constant="11" id="VSU-0h-M3k"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="AzN-pJ-H5a" secondAttribute="bottom" constant="249" id="iub-EQ-hcG"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="AzN-pJ-H5a" secondAttribute="trailing" constant="225" id="tPD-hK-IWf"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="status" destination="AzN-pJ-H5a" id="hkI-d2-dYa"/>
                                             <outlet property="video_feed" destination="6B0-Pm-bbQ" id="On4-kV-jWu"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="chart_cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="chart_cell" rowHeight="400" id="9n9-Lr-w0P" customClass="ChartTableViewCell" customModule="human_detection" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="338" width="414" height="400"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9n9-Lr-w0P" id="JU0-7g-yXc">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gxX-nN-gma" customClass="LineChartView" customModule="Charts">
+                                                    <rect key="frame" x="20" y="11" width="374" height="378"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number of times today: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TXx-xO-n8x">
+                                                    <rect key="frame" x="20" y="11" width="306" height="73"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="gxX-nN-gma" firstAttribute="leading" secondItem="JU0-7g-yXc" secondAttribute="leadingMargin" id="4ao-ra-nLD"/>
+                                                <constraint firstItem="gxX-nN-gma" firstAttribute="trailing" secondItem="JU0-7g-yXc" secondAttribute="trailingMargin" id="Cg4-xj-7Fq"/>
+                                                <constraint firstItem="gxX-nN-gma" firstAttribute="bottom" secondItem="JU0-7g-yXc" secondAttribute="bottomMargin" id="dxN-hw-cAA"/>
+                                                <constraint firstItem="gxX-nN-gma" firstAttribute="top" secondItem="JU0-7g-yXc" secondAttribute="topMargin" id="gaE-f1-nje"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="line_chart" destination="gxX-nN-gma" id="l0t-Id-00G"/>
+                                            <outlet property="times_today" destination="TXx-xO-n8x" id="fA5-fd-PGa"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="data_cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="data_cell" rowHeight="88" id="FJ3-Yl-9YR" customClass="DataTableViewCell" customModule="human_detection" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="344" width="414" height="88"/>
+                                        <rect key="frame" x="0.0" y="738" width="414" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FJ3-Yl-9YR" id="45l-Gd-rlN">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
@@ -110,6 +151,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="lG1-Ir-khL" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="4Sf-IB-l83"/>
+                            <constraint firstAttribute="bottom" secondItem="lG1-Ir-khL" secondAttribute="bottom" id="6Iw-f4-ERn"/>
+                            <constraint firstItem="lG1-Ir-khL" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Kpm-Rp-05C"/>
+                            <constraint firstItem="lG1-Ir-khL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pvl-a9-G5B"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Overview" id="yLx-4T-e2T"/>

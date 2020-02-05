@@ -8,6 +8,8 @@
 
 import UIKit
 import WebKit
+import Charts
+
 
 class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegate, UITableViewDataSource {
     
@@ -15,10 +17,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     // MARK: Variables
     @IBOutlet weak var data_view: UITableView!
     
-    public let ip_address = "192.168.1.181:5000"
-    public var Data:[String:[String]] = ["year":[], "month":[], "day":[], "time":[], "duration":[]]
+    public let ip_address = "192.168.1.249:5000"
+    public var Data:[String:[String]] = ["year":["2020"], "month":["01"], "day":["1"], "time":["10:10"], "duration":["50"]]
     
-    
+
     // MARK: Recieving data
     @objc func get_data() {
         // Prepare URL
@@ -40,7 +42,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                     let dictionary = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String : [String]]
                     DispatchQueue.main.async {
                         self.Data = dictionary!
-                        self.data_view.reloadData()
+                        self.data_view.reloadSections([1,2], with: UITableView.RowAnimation.fade)
                     }
                     
                 }
@@ -49,33 +51,43 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         task.resume()
     }
     
-    func save_data(dictionary: [String:[String]]) {
-        DispatchQueue.main.async {
-            self.Data = dictionary
-            }
+    // MARK: Proccess time
+    let formatter = RelativeDateTimeFormatter()
+    func time(year: String, month: String, day: String) -> String {
+        return "\(day)-\(month)-\(year)"
     }
     
     // MARK: Table view for data
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
         var title = "error"
         switch section {
         case 0: title = "Video Feed"
-        case 1: title = "Data"
+        case 1: title = "Chart"
+        case 2: title = "Data"
         default: break
         }
         
         return title
     }
     
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = UIColor.white.withAlphaComponent(0.7)
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.black
+        header.textLabel?.font = UIFont.boldSystemFont(ofSize: 21)
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = 0
         switch indexPath.section {
-        case 0: height = 316
-        case 1: height = 88
+        case 0: height = 310
+        case 1: height = 10 // 400
+        case 2: height = 88
         default: break
         }
         
@@ -86,7 +98,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         var row = 0
         switch section {
         case 0: row = 1
-        case 1: row = 10
+        case 1: row = 1
+        case 2: row = Data["time"]!.count
         default: break
         }
         
@@ -103,31 +116,44 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
             return cell
         }
         
-        // Data
+        // Chart
         if (indexPath.section == 1) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "data_cell", for: indexPath) as! DataTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "chart_cell", for: indexPath) as! ChartTableViewCell
             
-            cell.time.text = "blahh"
-            cell.duration.text = "10000000 sec"
-            cell.num_today.text = "1"
+            var today = 0
+            
+            
+            
+            // cell.times_today =
+            
+            var dataPoints = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            
+            var values: [Double] = [1,2,3,4,5,6,7]
+            
+            cell.draw_chart(dataPoints: dataPoints, values: values)
+            
+            cell.line_chart.isHidden = true
+            
             
             return cell
         }
-        else {
-            let table = UITableViewCell()
-            return table
+        
+        // Data
+        if (indexPath.section == 2) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "data_cell", for: indexPath) as! DataTableViewCell
+            
+            let index = Data["time"]!.count - indexPath.row - 1
+            
+            cell.time.text = time(year: Data["year"]![index], month: Data["month"]![index], day: Data["day"]![index]) + ", \(Data["time"]![index])"
+            
+            cell.duration.text = "Duration: \(Data["duration"]![index]) sec"
+            cell.num_today.text = "Counter: " + Data["day"]![index]
+            
+            return cell
         }
         
-        /*
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DataTableViewCell
-        
-        cell.time.text = Data["time"]!.reversed()[indexPath.row]
-        
-        cell.duration.text = "Duration: " + Data["duration"]!.reversed()[indexPath.row] + " sec"
-        
-        cell.num_today.text = "counter: " + String(Data["time"]!.count - indexPath.row)
-    */
-        
+        let table = UITableViewCell()
+        return table
     }
     
     // MARK: Startup
@@ -152,6 +178,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     @objc func appWillEnterForeground() {
         get_data()
         data_view.reloadData()
+        // data_view.reloadSections([1], with: .none)
     }
     
 

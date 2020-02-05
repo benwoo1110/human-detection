@@ -1,5 +1,5 @@
 //
-//  DataTableViewCell.swift
+//  DataTableViewswift
 //  human detection
 //
 //  Created by Ben Woo on 10/1/20.
@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import Charts
 
 class VideoTableViewCell: UITableViewCell {
     
@@ -21,10 +22,11 @@ class VideoTableViewCell: UITableViewCell {
         video_feed.layer.masksToBounds = true
         video_feed.scrollView.isScrollEnabled = false
         video_feed.scrollView.bounces = false
-        video_feed.backgroundColor = .black
+        video_feed.layer.borderColor = UIColor.black.cgColor
+        video_feed.layer.borderWidth = 1.0
         
         status.textAlignment = .center
-        status.backgroundColor = UIColor.red.withAlphaComponent(0.5)
+        status.backgroundColor = .red
         status.layer.cornerRadius = 15
         status.layer.masksToBounds = true
     }
@@ -84,7 +86,7 @@ class VideoTableViewCell: UITableViewCell {
     func videoFeed(ip_address: String) {
         DispatchQueue.main.async {
             let url = URL(string: "http://\(ip_address)/video_feed")!
-            self.video_feed.load(URLRequest(url: url))
+            // self.video_feed.load(URLRequest(url: url))
         }
     }
 
@@ -108,6 +110,45 @@ class DataTableViewCell: UITableViewCell {
         
         // backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         //layer.cornerRadius = 30
+        
+        num_today.isHidden = true
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+}
+
+class ChartTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var line_chart: LineChartView!
+    
+    @IBOutlet weak var times_today: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        
+        // line_chart.layer.cornerRadius = 20
+        // line_chart.backgroundColor = UIColor.gray.withAlphaComponent(0.2)
+        // line_chart.layer.masksToBounds = true
+        
+        line_chart.dragEnabled = true
+        line_chart.setScaleEnabled(true)
+        
+        line_chart.xAxis.drawGridLinesEnabled = false
+        line_chart.xAxis.enabled = true
+        line_chart.xAxis.labelPosition = .bottom
+        
+        line_chart.leftAxis.drawGridLinesEnabled = false
+        line_chart.xAxis.enabled = true
+        
+        line_chart.rightAxis.enabled = false
+        
+        
+        
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -116,4 +157,32 @@ class DataTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    
+    func draw_chart(dataPoints: [String], values: [Double]) {
+        var dataEntries = [ChartDataEntry]()
+        for i in 0..<dataPoints.count {
+            let dataEntry = ChartDataEntry(x: Double(i), y: values[i])
+            dataEntries.append(dataEntry)
+        }
+        
+        let set = LineChartDataSet(entries: dataEntries, label: "Weekly summary")
+        set.mode = .cubicBezier
+        set.cubicIntensity = 0.2
+        set.drawCirclesEnabled = true
+        set.lineWidth = 1.8
+        set.circleRadius = 4.0
+        set.setCircleColor(.black)
+        set.setColor(.red)
+        set.fillColor = .red
+        set.fillAlpha = 0.6
+        set.drawFilledEnabled = true
+        set.drawHorizontalHighlightIndicatorEnabled = false
+        
+        // line_chart.xAxis.valueFormatter = IndexAxisValueFormatter(values: ["asdjfh"])
+        
+        let data = LineChartData(dataSet: set)
+        data.setDrawValues(true)
+        data.dataSets[0].valueFormatter = self as? IValueFormatter
+        line_chart.data = data
+    }
 }
