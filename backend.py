@@ -29,8 +29,16 @@ from database import Database
 app = Flask(__name__)
 
 # Grep device ip
-ip_address = socket.gethostbyname(socket.gethostname())
+ip_address = ''
+try:
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8",80))
+    ip_address = s.getsockname()[0]
+    s.close()
 
+except:
+    print("No network avaliable.")
+    ip_address = "127.0.1.1"
 
 #
 # Video feed
@@ -67,7 +75,7 @@ def detect_motion(frameCount):
     time_in_toliet = 0
     movement = []
     in_toliet = "Unoccupied"
-    hit_box = [50, 350, 500, 800]
+    hit_box = [400, 0, 800, 640]
     # loop over frames from the video stream
     while True:
 	# read the next frame from the video stream, resize it,
@@ -115,16 +123,16 @@ def detect_motion(frameCount):
                 counter += 1
 		# Threshold incase of missed detection
                 if counter > 5:
-                    if time.time()-time_in_motion > 0.4:
+                    if time.time()-time_in_motion > 0.3:
 
 			# Entered room
                         if len(movement) != 0 and hit_box[0] < movement[-1][0] < hit_box[2] and hit_box[1] < movement[-1][1] < hit_box[3]:
                             # If exited detection is missed:
                             if in_toliet == "Occupied":
                                 Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str('-1'))
-                	        Database.read_data()
+                                # Database.read_data()
 
-                	    print("entered")
+                            print("entered")
                             in_toliet = "Occupied"
                             time_in_toliet = time.time()
 
@@ -132,22 +140,27 @@ def detect_motion(frameCount):
                             curr_data["month"] = timestamp.strftime("%m")
                             curr_data["day"] = timestamp.strftime("%e")
                             curr_data["time"] = timestamp.strftime("%R")
-                                
 
 			# Exited room
                         if len(movement) != 0 and hit_box[0] < movement[0][0] < hit_box[2] and hit_box[1] < movement[0][1] < hit_box[3]:
                             if in_toliet == "Unoccupied":
-                                Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str('-1'))
-                	        Database.read_data()
-                	            
+                                curr_data["year"] = time.strftime("%Y")
+                                curr_data["month"] = timestamp.strftime("%m")
+                                curr_data["day"] = timestamp.strftime("%e")
+                                curr_data["time"] = timestamp.strftime("%R")
+                                Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str('-2'))
+                                Database.read_data()
+
                             print("exited")
-                            in_toliet = "Unoccupied"
                             curr_data["duration"] = int(time.time() - time_in_toliet)
 
-                           # Only save if duration is more that 5 second
-                            if curr_data["duration"] > 5:
-	                            Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str(curr_data["duration"]))
-                	            Database.read_data()
+                            if in_toliet == "Occupied":
+                                # Only save if duration is more that 5 second
+                                if curr_data["duration"] > 8:
+                                    Database.add_data(str(curr_data["year"]), str(curr_data["month"]), str(curr_data["day"]), str(curr_data["time"]), str(curr_data["duration"]))
+                                    Database.read_data()
+
+                            in_toliet = "Unoccupied"
 
                     counter, movement = 0, []
 
